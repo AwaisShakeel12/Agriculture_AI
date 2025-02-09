@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Chat Interface</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #e0e0e0;
+           
+        }
+
+ 
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            height: 100%;
+            background-color: #1e1e1e;
+            display: flex;
+            justify-content: center;
+         
+     
+            border-radius: 12px;
+            display: flex;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        .thread-list {
+            width: 20%;
+            background-color: #32b47f;
+        
+            padding: 20px;
+            overflow-y: auto;
+            transition: background-color 0.3s ease;
+        }
+        .thread-list ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .thread-list ul li {
+            margin-bottom: 10px;
+        }
+        .thread-list ul li a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 16px;
+            padding: 10px;
+            display: block;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .thread-list ul li a:hover {
+            background-color: #0078d4;
+            color: white;
+        }
+
+
+        .chat-header2 {
+            background-color: #20232a;
+            background-color: white;
+            width: 97%;
+            margin-left: -20px;
+            
+            color: #61dafb;
+            padding: 5px 5px;
+            padding-top: 0px;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            overflow: hidden;
+            align-items: center;
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+         
+        }
+        .chat-header2 a {
+            color: #61dafb;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            
+        }
+        .chat-header2 a:hover {
+            color: #e0e0e0;
+        }
+
+
+
+
+
+
+        .chat-container {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            background-color: #1a1a1a;
+            background-color: white;
+            border-radius: 25px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #32b47f;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(245, 245, 245, 0.683);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(245, 245, 245, 0.683);
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+            background: rgba(245, 245, 245, 0.683);
+        }
+
+        ::-moz-scrollbar {
+            width: 8px;
+        }
+
+        ::-moz-scrollbar-track {
+            background: #32b47f;
+            border-radius: 10px;
+        }
+
+        ::-moz-scrollbar-thumb {
+            background: #32b47f;
+            border-radius: 10px;
+        }
+
+        ::-moz-scrollbar-thumb:hover {
+            background: #32b47f;
+        }
+
+        ::-moz-scrollbar-thumb:active {
+            background: #32b47f;
+        }
+        .chat-header {
+            background-color: #32b47f;
+            color: white;
+            padding: 10px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #32b47f;
+            border-radius: 5px;
+          
+            
+         
+        }
+        .chat-header a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            
+        }
+        .chat-header a:hover {
+            color: #e0e0e0;
+        }
+        .chat-messages {
+            
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            border-bottom: 1px solid transparent;
+        }
+        .chat-message {
+            margin-bottom: 25px;
+            display: flex;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+            
+        }
+        .chat-message.user {
+            justify-content: flex-end;
+            
+        }
+        .chat-message.user .message-content {
+            background-color: #0078d4;
+            background-color: #32b47f;
+            color: white;
+           
+        }
+        .chat-message.ai {
+            justify-content: flex-start;
+        }
+        .chat-message.ai .message-content {
+       
+            background-color: rgba(228, 233, 237, 0.792);
+            box-shadow: 0 6px 20px rgba(235, 232, 232, 0.763);
+            color: black;
+        }
+        .message-content {
+            padding: 12px 16px;
+            border-radius: 20px;
+            max-width: 70%;
+            word-wrap: break-word;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid transparent;
+        }
+        .chat-input input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #555;
+            border-radius: 20px;
+            font-size: 16px;
+            margin-right: 10px;
+         
+            background-color: rgba(228, 233, 237, 0.792);
+        
+            color: black;
+            border-color:rgba(228, 233, 237, 0.792); ;
+            transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+           
+        }
+        .chat-input input:focus {
+            outline: none;
+            border-color: #32b47f;
+            
+        }
+        .chat-input button {
+            padding: 10px 20px;
+           
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+
+            grid-column: span 2;
+      
+            border: none;
+            
+            background-color: #32b47f;
+            color: white;
+          
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: #32b47f;
+            
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .chat-input button:hover {
+            background-color: #20b46a;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(20, 231, 164, 0.6);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+    
+        <div class="chat-container">
+            <div class="chat-header">
+                <a href=""><span style='font-size:20px;'>&#127793;</span>Agriculture-AI</a>
+                <span>Awais-GPT</span>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                {% for message in conversation %}
+                    <div class="chat-message {{ message.sender|lower }}">
+                        {% if message.sender == 'AI' %}
+                        <span style='font-size:25px;'>&#127793;</span>
+                        {% endif %}
+                        <div class="message-content">
+                             <strong> {{ message.sender }}:</strong> {{ message.message }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <form class="chat-input" method="post">
+                {% csrf_token %}
+                <input type="text" name="user_msg" placeholder="Type your message...">
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function scrollToBottom() {
+            var chatMessages = document.getElementById('chatMessages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        window.onload = scrollToBottom;
+
+        var observer = new MutationObserver(function() {
+            scrollToBottom();
+        });
+
+        var chatMessages = document.getElementById('chatMessages');
+        observer.observe(chatMessages, { childList: true });
+    </script>
+</body>
+</html>
